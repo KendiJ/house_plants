@@ -45,6 +45,26 @@
 			path = house_plantsUITests;
 			sourceTree = "<group>";
 		};
+		AD801BDA2F085BBB00EF88AB /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AD801BE12F085BF300EF88AB /* Services */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AD801BE52F085C2300EF88AB /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		AD801BEC2F085C5800EF88AB /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +95,10 @@
 		AD801BA62F084B8100EF88AB = {
 			isa = PBXGroup;
 			children = (
+				AD801BEC2F085C5800EF88AB /* Views */,
+				AD801BE52F085C2300EF88AB /* ViewModels */,
+				AD801BE12F085BF300EF88AB /* Services */,
+				AD801BDA2F085BBB00EF88AB /* Models */,
 				AD801BB12F084B8200EF88AB /* house_plants */,
 				AD801BBF2F084B8400EF88AB /* house_plantsTests */,
 				AD801BC92F084B8400EF88AB /* house_plantsUITests */,
@@ -109,6 +133,10 @@
 			);
 			fileSystemSynchronizedGroups = (
 				AD801BB12F084B8200EF88AB /* house_plants */,
+				AD801BDA2F085BBB00EF88AB /* Models */,
+				AD801BE12F085BF300EF88AB /* Services */,
+				AD801BE52F085C2300EF88AB /* ViewModels */,
+				AD801BEC2F085C5800EF88AB /* Views */,
 			);
 			name = house_plants;
 			packageProductDependencies = (
