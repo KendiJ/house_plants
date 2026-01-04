@@ -10,8 +10,7 @@ struct Room: Identifiable, Codable {
         case "Bedroom": return "bed.double.fill"
         case "Kitchen": return "fork.knife"
         case "Living Room": return "house.fill"
-        default:
-            <#code#>
+        default: return "house.fill"
         }
     }
 }

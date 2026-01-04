@@ -36,6 +36,8 @@ struct RoomsListView: View {
     }
 }
 
-#Preview {
-    RoomsListView()
+struct RoomsListView_Previews: PreviewProvider {
+    static var previews: some View {
+        RoomsListView()
+    }
 }

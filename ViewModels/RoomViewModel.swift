@@ -6,7 +6,7 @@ class RoomViewModel: ObservableObject {
     // @Published: Then this changes the UI redraws automatically
     @Published var rooms: [Room] = []
     @Published var isLoading = false
-    @Published var errorMessage = String?
+    @Published var errorMessage: String? = nil
     
     func fetchRooms() async {
         isLoading = true

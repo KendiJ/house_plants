@@ -8,8 +8,8 @@ enum NetworkError: Error {
 class PlantService {
     static let shared = PlantService()
     
-    func fetchPlants() async throws -> [Room] {
-        guard let url = URL(string: "http://localhost:8080/rooms") else {
+    func fetchRooms() async throws -> [Room] {
+        guard let url = URL(string: "http://localhost:8080/plants") else {
             throw NetworkError.badURL
         }
         // 1. Fetch Data
