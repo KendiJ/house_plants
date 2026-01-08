@@ -22,7 +22,7 @@ struct RoomsListView: View {
                     }
                 } else {
                     List(viewModel.rooms) { room in
-                        NavigationLink(destination: Text("Plant list for: \(room.name)")) {
+                        NavigationLink(destination: PlantsListView(roomName: room.name, roomID: room.id)) {
                             RoomRowView(room: room)
                         }
                     }
