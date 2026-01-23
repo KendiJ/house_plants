@@ -8,6 +8,7 @@ struct PlantsListView: View {
     @State private var plants: [Plant] = []
     @State private var isLoading = true
     @State private var errorMessage: String? = nil
+    @State private var isShowingAddSheet =  false
     
     var body: some View {
         Group {
@@ -37,9 +38,24 @@ struct PlantsListView: View {
             }
         }
         .navigationTitle(roomName)
+        .toolbar {
+            Button {
+                isShowingAddSheet = true
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
+        .sheet(isPresented: $isShowingAddSheet) {
+            AddPlantView(roomID: roomID)
+                // When the sheet closes, refresh the list!
+                .onDisappear {
+                    Task { await loadPlants() }
+                }
+        }
         .task {
             await loadPlants()
         }
+        
     }
     
     func loadPlants() async {

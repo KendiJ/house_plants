@@ -50,4 +50,34 @@ class PlantService {
         // 4. Decode
         return try JSONDecoder().decode([Plant].self, from: data)
     }
+    
+    func addPlant(name: String, roomID: Int, waterFreq: Int, imageURL: String) async throws {
+        guard let url = URL(string: "http://localhost:8080/plants") else {
+            throw NetworkError.badURL
+        }
+        struct CreatePlantData: Encodable {
+            let name: String
+            let room_id: Int
+            let water_frequency: Int
+            let image_url: String
+        }
+        let newPlant = CreatePlantData(
+            name: name,
+            room_id: roomID,
+            water_frequency: waterFreq,
+            image_url: imageURL
+        )
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(newPlant)
+        
+        let (_, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw NetworkError.requestFailed
+        }
+    }
 }
