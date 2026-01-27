@@ -16,6 +16,7 @@ struct RoomRowView: View {
                 VStack(alignment: .leading) {
                     Text(room.name)
                         .font(.headline)
+                        .foregroundStyle(.black)
                     Text("Tap to see plants")
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -23,17 +24,13 @@ struct RoomRowView: View {
                 
                 Spacer()
                 
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.black)
+//                Image(systemName: "arrow.right")
+//                    .foregroundStyle(.black.opacity(0.5))
             }
-            .padding(.vertical, 4)
+            .padding()
+            .background(Color.black.opacity(0.1))
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+            .padding(.horizontal)
         }
-}
-
-// Preview provider (like hot-reload)
-struct RoomRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        // You'll need a dummy room here
-        RoomRowView(room: Room(id: 1, name: "Living Room"))
-    }
 }
