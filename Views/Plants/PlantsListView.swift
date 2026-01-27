@@ -31,7 +31,7 @@ struct PlantsListView: View {
                 )
             } else {
                 List(plants) { plant in
-                    NavigationLink(destination: PlantDetailView(plant: plant)){
+                    NavigationLink(destination: PlantDetailView(plant: plant, roomName: roomName)){
                         PlantRowView(plant: plant)
                     }
                 }

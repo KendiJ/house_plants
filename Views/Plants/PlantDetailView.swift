@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PlantDetailView: View {
     let plant: Plant
+    let roomName: String
     
     // A fake "Last Watered" date for UI polish
     @State private var lastWatered = Date()
@@ -13,13 +14,26 @@ struct PlantDetailView: View {
                 ZStack {
                     Circle()
                         .fill(Color.green.opacity(0.1))
-                        .frame(width: 150, height: 150)
+                        .frame(width: 200, height: 200)
                     
-                    Image(systemName: "leaf.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80)
-                        .foregroundStyle(.green)
+                    AsyncImage(url: URL(string: plant.image_url)) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 180, height: 180)
+                                .clipShape(Circle())
+                                .shadow(radius: 10)
+                        default:
+                            Image(systemName: "leaf.fill")
+                                                   .resizable()
+                                                   .scaledToFit()
+                                                   .frame(width: 80)
+                                                   .foregroundStyle(.green)
+                        }
+                    }
+                    
                 }
                 .padding(.top, 40)
                 
