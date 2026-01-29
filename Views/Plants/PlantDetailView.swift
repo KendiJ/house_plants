@@ -27,10 +27,10 @@ struct PlantDetailView: View {
                                 .shadow(radius: 10)
                         default:
                             Image(systemName: "leaf.fill")
-                                                   .resizable()
-                                                   .scaledToFit()
-                                                   .frame(width: 80)
-                                                   .foregroundStyle(.green)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80)
+                                .foregroundStyle(.green)
                         }
                     }
                     
