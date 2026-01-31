@@ -3,6 +3,7 @@ import Foundation
 struct Room: Identifiable, Codable {
     let id: Int
     let name: String
+    let image_url: String?
     
     // Computed property for UI (Optional fun)
     var icon: String {
