@@ -40,7 +40,7 @@ struct RoomCardView: View {
             }
             .frame(height: 120)
             .frame(maxWidth: .infinity)
-            .background(Color.gray.opacity(0.1))
+            .background(Color.gray.opacity(0.4))
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(room.name)
@@ -57,6 +57,6 @@ struct RoomCardView: View {
             .background(Color(.systemBackground))
         }
         .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .shadow(color: .black.opacity(0.4), radius: 5, x: 0, y: 2)
     }
 }
