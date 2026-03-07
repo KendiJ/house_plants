@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct PlantsListView: View {
-    let roomName: String
-    let roomID: Int
+    let room: Room
     
     // We reuse the PlantService directly here for simplicity
     @State private var plants: [Plant] = []
@@ -11,43 +10,69 @@ struct PlantsListView: View {
     @State private var isShowingAddSheet =  false
     
     var body: some View {
-        Group {
-            if isLoading {
-                ProgressView("Checking for plants...")
-            } else if let error = errorMessage {
-                VStack {
-                    Image(systemName: "exclamationMark.triangle")
-                        .font(.largeTitle)
-                        .foregroundStyle(.orange)
-                    Text(error)
-                        .multilineTextAlignment(.center)
-                        .padding()
+        ScrollView {
+            VStack(spacing: 20) {
+                ZStack(alignment: .bottomLeading) {
+                    if let urlString = room.image_url, let url = URL(string: urlString) {
+                        AsyncImage(url: url) {image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(height: 250)
+                                .clipped()
+                        } placeholder: {
+                            Color.gray.opacity(0.2).frame(height: 250)
+                        }
+                    } else {
+                        Color.green.opacity(0.2).frame(height: 250)
+                    }
+                    LinearGradient(colors: [.black.opacity(0.6), .clear], startPoint: .bottom, endPoint: .top)
+                    
+                    VStack(alignment: .leading) {
+                        Text(room.name)
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundStyle(.white)
+                        Text("\(plants.count) Plants")
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.8))
+                    }
+                    .padding()
                 }
-            } else if plants.isEmpty {
-                ContentUnavailableView(
-                    "No plants here",
-                    systemImage: "leaf",
-                    description: Text("This room is looking a little empty")
-                )
-            } else {
-                List(plants) { plant in
-                    NavigationLink(destination: PlantDetailView(plant: plant, roomName: roomName)){
-                        PlantRowView(plant: plant)
+                VStack(spacing: 16) {
+                    if isLoading {
+                        ProgressView("Loading plants...")
+                            .padding(.top, 50)
+                    } else if plants.isEmpty {
+                        ContentUnavailableView(
+                            "Not plants yet",
+                            systemImage: "leaf",
+                            description: Text("Tap + button to add a one!")
+                        )
+                        .padding(.top, 50)
+                    }else {
+                        ForEach(plants) { plant in
+                            NavigationLink(destination: PlantDetailView(plant: plant, roomName: room.name)) {
+                                PlantCardView(plant: plant)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
+                .padding(.horizontal)
             }
         }
-        .navigationTitle(roomName)
+        .ignoresSafeArea(edges: .top)
         .toolbar {
             Button {
                 isShowingAddSheet = true
             } label: {
-                Image(systemName: "plus")
+                Image(systemName: "plus.circle.fill")
+                    .font(.title3)
+                    .foregroundStyle(.white)
             }
         }
         .sheet(isPresented: $isShowingAddSheet) {
-            AddPlantView(roomID: roomID)
-                // When the sheet closes, refresh the list!
+            AddPlantView(roomID: room.id)
                 .onDisappear {
                     Task { await loadPlants() }
                 }
@@ -55,15 +80,14 @@ struct PlantsListView: View {
         .task {
             await loadPlants()
         }
-        
     }
     
     func loadPlants() async {
         do {
-            self.plants = try await PlantService.shared.fetchPlants(forRoomID: roomID)
-            self.isLoading = false
+            self.plants = try await PlantService.shared.fetchPlants(forRoomID: room.id)
+            self.isLoading =  false
         } catch {
-            self.errorMessage = "Could not load plants: \(error.localizedDescription)"
+            self.errorMessage = "Could not load plants"
             self.isLoading = false
         }
     }

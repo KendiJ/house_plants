@@ -29,7 +29,7 @@ struct RoomsListView: View {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 16) {
                             ForEach(viewModel.rooms) {room in
-                                NavigationLink(destination: PlantsListView(roomName: room.name, roomID: room.id)) {
+                                NavigationLink(destination: PlantsListView(room: room)) {
                                     RoomCardView(room: room)
                                 }
                                 .buttonStyle(.plain)
