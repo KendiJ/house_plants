@@ -4,74 +4,100 @@ struct PlantDetailView: View {
     let plant: Plant
     let roomName: String
     
-    // A fake "Last Watered" date for UI polish
-    @State private var lastWatered = Date()
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // 1. Big Icon Header
+            VStack(spacing: 0) {
                 ZStack {
-                    Circle()
-                        .fill(Color.green.opacity(0.1))
-                        .frame(width: 200, height: 200)
-                    
-                    AsyncImage(url: URL(string: plant.image_url)) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 180, height: 180)
-                                .clipShape(Circle())
-                                .shadow(radius: 10)
-                        default:
-                            Image(systemName: "leaf.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 80)
-                                .foregroundStyle(.green)
+                    if let url = URL(string: plant.image_url) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            default:
+                                Color.green.opacity(0.2)
+                            }
                         }
+                    } else {
+                        Color.green.opacity(0.2)
                     }
-                    
                 }
-                .padding(.top, 40)
+                .frame(height: 450)
+                .clipped()
                 
-                // 2. Plant Info
-                Text("Room #\(plant.room_id)")
-                    .foregroundStyle(.secondary)
-                
-                Divider()
-                
-                // 3. Water Schedule Card
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Care schedule")
-                        .font(.headline)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(plant.name)
+                        .font(.system(size: 36, weight: .bold, design: .serif))
+                        .foregroundStyle(.primary)
                     
                     HStack {
-                        Image(systemName: "drop.fill")
-                            .foregroundStyle(.blue)
-                        Text("Water every \(plant.water_frequency) days")
-                        Spacer()
+                        Image(systemName: "house.fill")
+                            .foregroundStyle(.green)
+                        Text(roomName)
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding()
-                    .background(Color.blue.opacity(0.1))
-                    .cornerRadius(12)
-                    
-                    // Interactive Element (Just for show right now)
-                    DatePicker("Last watered", selection: $lastWatered, displayedComponents: .date)
-                        .padding()
-                        .background(Color(.secondarySystemBackground))
-                        .cornerRadius(12)
                 }
-                .padding(.horizontal)
+                Divider()
                 
-                Spacer()
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Care Schedule")
+                        .font(.headline)
+                    
+                    HStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.blue.opacity(0.1))
+                                .frame(width: 50, height: 50)
+                            Image(systemName: "drop.fill")
+                                .font(.title2)
+                                .foregroundStyle(.blue)
+                        }
+                        VStack(alignment: .leading) {
+                            Text("Watering")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Text("Every \(plant.water_frequency) days")
+                                .font(.headline)
+                        }
+                    }
+                }
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("About")
+                        .font(.headline)
+                    Text("This beautifu \(plant.name) is a perfect addition to your \(roomName). It thrives in medium to bright indirect light. Remember to let the top inch of soil dry out between waterings to keep it happy and healthy.")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .lineSpacing(4)
+                }
             }
+            .padding(30)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 40))
+            .offset(y: -50)
+            .padding(.bottom, -50)
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .ignoresSafeArea(edges: .top)
+        .navigationBarBackButtonHidden(true)
+        .overlay(alignment: .topLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "arrow.left")
+                    .font(.title3.weight(.bold))
+                    .padding(12)
+                    .background(Color.white)
+                    .foregroundStyle(.black)
+                    .clipShape(Circle())
+                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+            }
+            .padding(.leading, 20)
+            .padding(.top, 20)
+        }
     }
+    
 }
-//#Preview {
-//    PlantDetailView(plant: Plant(id: 1, name: "Test Plant", room_id: 1, water_frequency: 7))
-//}

@@ -16,6 +16,10 @@ struct PlantRowView: View {
                         .scaledToFill()
                         .frame(width: 50, height: 50)
                         .clipShape(Circle())
+                case.failure:
+                    Image(systemName: "leaf.fill")
+                        .foregroundStyle(.green)
+                        .frame(width: 50, height: 50)
                     
                 @unknown default:
                     EmptyView()
