@@ -6,41 +6,62 @@ struct RoomCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            ZStack {
-                Color.gray.opacity(0.1)
-                
-                if let urlString = room.image_url, let url = URL(string: urlString) {
-                    
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 120)
-                                .clipped()
-                        case .failure:
-                            
-                            Image(systemName: "house.fill")
-                                .font(.largeTitle)
-                                .foregroundStyle(.green)
-                        case .empty:
-                            ProgressView()
-                        @unknown default:
-                            EmptyView()
+            Rectangle()
+                .fill(Color.gray.opacity(0.1))
+                .frame(height: 120)
+                .overlay {
+                    if let urlString = room.image_url, let url = URL(string: urlString) {
+                        AsyncImage(url: url) { phase in
+                            if let image = phase.image {
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                            } else if phase.error != nil {
+                                Image(systemName: "house.fill")
+                                    .foregroundStyle(.green)
+                            } else {
+                                ProgressView()
+                            }
                         }
+                        .clipped()
                     }
-                } else {
-                    Image(systemName: "house.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40, height: 40)
-                        .foregroundStyle(.green)
                 }
-            }
-            .frame(height: 120)
-            .frame(maxWidth: .infinity)
-            .background(Color.gray.opacity(0.4))
+            
+//            ZStack {
+//                Color.gray.opacity(0.1)
+//                
+//                if let urlString = room.image_url, let url = URL(string: urlString) {
+//                    
+//                    AsyncImage(url: url) { phase in
+//                        switch phase {
+//                        case .success(let image):
+//                            image
+//                                .resizable()
+//                                .scaledToFill()
+//                                .frame(height: 120)
+//                                .clipped()
+//                        case .failure:
+//                            
+//                            Image(systemName: "house.fill")
+//                                .font(.largeTitle)
+//                                .foregroundStyle(.green)
+//                        case .empty:
+//                            ProgressView()
+//                        @unknown default:
+//                            EmptyView()
+//                        }
+//                    }
+//                } else {
+//                    Image(systemName: "house.fill")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 40, height: 40)
+//                        .foregroundStyle(.green)
+//                }
+//            }
+//            .frame(height: 120)
+//            .frame(maxWidth: .infinity)
+//            .background(Color.gray.opacity(0.4))
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(room.name)
