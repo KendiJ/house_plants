@@ -89,14 +89,14 @@ struct PlantDetailView: View {
             } label: {
                 Image(systemName: "arrow.left")
                     .font(.title3.weight(.bold))
-                    .padding(12)
-                    .background(Color.white)
-                    .foregroundStyle(.black)
+                    .padding(10)
+                    .background(Color(.systemBackground))
+                    .foregroundStyle(.primary)
                     .clipShape(Circle())
-                    .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+                    .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 2)
             }
-            .padding(.leading, 20)
-            .padding(.top, 20)
+            .safeAreaPadding(.top)
+            .padding(.leading, 16)
         }
     }
     
